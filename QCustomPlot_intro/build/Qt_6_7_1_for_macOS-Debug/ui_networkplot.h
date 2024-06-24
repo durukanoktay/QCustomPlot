@@ -11,9 +11,11 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 #include <qcustomplot.h>
@@ -24,8 +26,13 @@ class Ui_NetworkPlot
 {
 public:
     QWidget *centralwidget;
-    QLabel *label;
     QCustomPlot *widget;
+    QWidget *widget1;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *btnClear;
+    QLabel *label;
+    QPushButton *btnPlot;
+    QPushButton *btnClose;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -33,28 +40,52 @@ public:
     {
         if (NetworkPlot->objectName().isEmpty())
             NetworkPlot->setObjectName("NetworkPlot");
-        NetworkPlot->resize(800, 600);
+        NetworkPlot->resize(788, 476);
         centralwidget = new QWidget(NetworkPlot);
         centralwidget->setObjectName("centralwidget");
-        label = new QLabel(centralwidget);
+        widget = new QCustomPlot(centralwidget);
+        widget->setObjectName("widget");
+        widget->setGeometry(QRect(20, 70, 731, 311));
+        widget1 = new QWidget(centralwidget);
+        widget1->setObjectName("widget1");
+        widget1->setGeometry(QRect(50, 20, 691, 36));
+        horizontalLayout = new QHBoxLayout(widget1);
+        horizontalLayout->setObjectName("horizontalLayout");
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        btnClear = new QPushButton(widget1);
+        btnClear->setObjectName("btnClear");
+
+        horizontalLayout->addWidget(btnClear);
+
+        label = new QLabel(widget1);
         label->setObjectName("label");
-        label->setGeometry(QRect(50, 20, 621, 71));
         QFont font;
         font.setPointSize(20);
         label->setFont(font);
-        widget = new QCustomPlot(centralwidget);
-        widget->setObjectName("widget");
-        widget->setGeometry(QRect(30, 140, 731, 361));
+
+        horizontalLayout->addWidget(label);
+
+        btnPlot = new QPushButton(widget1);
+        btnPlot->setObjectName("btnPlot");
+
+        horizontalLayout->addWidget(btnPlot);
+
+        btnClose = new QPushButton(widget1);
+        btnClose->setObjectName("btnClose");
+
+        horizontalLayout->addWidget(btnClose);
+
         NetworkPlot->setCentralWidget(centralwidget);
         menubar = new QMenuBar(NetworkPlot);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 800, 42));
+        menubar->setGeometry(QRect(0, 0, 788, 42));
         NetworkPlot->setMenuBar(menubar);
         statusbar = new QStatusBar(NetworkPlot);
         statusbar->setObjectName("statusbar");
         NetworkPlot->setStatusBar(statusbar);
 
         retranslateUi(NetworkPlot);
+        QObject::connect(btnClose, &QPushButton::clicked, NetworkPlot, qOverload<>(&QMainWindow::close));
 
         QMetaObject::connectSlotsByName(NetworkPlot);
     } // setupUi
@@ -62,7 +93,10 @@ public:
     void retranslateUi(QMainWindow *NetworkPlot)
     {
         NetworkPlot->setWindowTitle(QCoreApplication::translate("NetworkPlot", "NetworkPlot", nullptr));
+        btnClear->setText(QCoreApplication::translate("NetworkPlot", "Clear", nullptr));
         label->setText(QCoreApplication::translate("NetworkPlot", "Network Plot", nullptr));
+        btnPlot->setText(QCoreApplication::translate("NetworkPlot", "Plot", nullptr));
+        btnClose->setText(QCoreApplication::translate("NetworkPlot", "close", nullptr));
     } // retranslateUi
 
 };
